@@ -23,6 +23,7 @@ import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.EnumUtil;
@@ -48,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.ahoo.cosid.IdGenerator;
 import me.ahoo.cosid.provider.DefaultIdGeneratorProvider;
 import net.dreamlu.mica.core.result.R;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -449,6 +451,19 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     @Override
     public UserDO getByUsername(String username) {
         return baseMapper.selectByUsername(username);
+    }
+
+    @Override
+    public UserDO getByAccount(String account) {
+        if (StringUtils.isNotBlank(account)) {
+            account = account.toLowerCase();
+        }
+        if (Validator.isEmail(account)) {
+            return this.getByEmail(account);
+        } else if (Validator.isMobile(account)) {
+            return this.getByPhone(account);
+        }
+        return getByUsername(account);
     }
 
     @Override

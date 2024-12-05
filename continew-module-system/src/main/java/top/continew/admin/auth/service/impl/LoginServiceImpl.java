@@ -98,9 +98,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String accountLogin(String username, String password, HttpServletRequest request) {
-        UserDO user = userService.getByUsername(username);
+        UserDO user = userService.getByAccount(username);
         boolean isError = ObjectUtil.isNull(user) || !passwordEncoder.matches(password, user.getPassword());
-        this.checkUserLocked(username, request, isError);
+        this.checkUserLocked(user.getUsername(), request, isError);
         CheckUtils.throwIf(isError, "用户名或密码错误");
         this.checkUserStatus(user);
         return this.login(user);

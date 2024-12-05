@@ -36,7 +36,10 @@
             <groupId>top.continew</groupId>
             <artifactId>continew-module-system</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-module-crm</artifactId>
+        </dependency>
         <!-- 任务调度插件（后续会改造为独立插件） -->
         <dependency>
             <groupId>top.continew</groupId>
@@ -71,6 +74,15 @@
     <build>
         <!-- 设置构建的 jar 包名 -->
         <finalName>${project.parent.name}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>templates/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <!-- Maven 打包插件 -->
             <plugin>
@@ -122,6 +134,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -130,6 +145,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <delimiters>
+                                <delimiter>@</delimiter>
+                            </delimiters>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources/${config-path}</directory>

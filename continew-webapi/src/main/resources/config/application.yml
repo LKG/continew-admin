@@ -5,7 +5,7 @@ project:
   # 应用名称
   app-name: continew-admin
   # 版本
-  version: 3.4.0
+  version: @revision@
   # 描述
   description: 持续迭代优化的前后端分离中后台管理系统框架，开箱即用，持续提供舒适的开发体验。
   # 基本包
@@ -19,7 +19,8 @@ project:
   license:
     name: Apache-2.0
     url: https://github.com/continew-org/continew-admin/blob/dev/LICENSE
-
+continew-starter:
+  version: @continew-starter.version@
 --- ### 日志配置
 continew-starter.log:
   # 包含信息
