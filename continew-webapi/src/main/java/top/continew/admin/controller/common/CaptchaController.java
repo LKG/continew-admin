@@ -45,9 +45,10 @@ import org.redisson.api.RateIntervalUnit;
 import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.continew.admin.auth.model.resp.CaptchaResp;
 import top.continew.admin.common.config.properties.CaptchaProperties;
 import top.continew.admin.common.constant.CacheConstants;
-import top.continew.admin.auth.model.resp.CaptchaResp;
+import top.continew.admin.common.constant.SysConstants;
 import top.continew.admin.system.enums.OptionCategoryEnum;
 import top.continew.admin.system.service.OptionService;
 import top.continew.starter.cache.redisson.util.RedisUtils;
@@ -111,13 +112,17 @@ public class CaptchaController {
     @Operation(summary = "获取图片验证码", description = "获取图片验证码（Base64编码，带图片格式：data:image/gif;base64）")
     @GetMapping("/image")
     public CaptchaResp getImageCaptcha() {
+        int loginCaptchaEnabled = optionService.getValueByCode2Int("LOGIN_CAPTCHA_ENABLED");
+        if (SysConstants.NO.equals(loginCaptchaEnabled)) {
+            return CaptchaResp.builder().isEnabled(false).build();
+        }
         String uuid = IdUtil.fastUUID();
         String captchaKey = CacheConstants.CAPTCHA_KEY_PREFIX + uuid;
         Captcha captcha = graphicCaptchaService.getCaptcha();
         long expireTime = LocalDateTimeUtil.toEpochMilli(LocalDateTime.now()
             .plusMinutes(captchaProperties.getExpirationInMinutes()));
         RedisUtils.set(captchaKey, captcha.text(), Duration.ofMinutes(captchaProperties.getExpirationInMinutes()));
-        return CaptchaResp.builder().uuid(uuid).img(captcha.toBase64()).expireTime(expireTime).build();
+        return CaptchaResp.of(uuid, captcha.toBase64(), expireTime);
     }
 
     /**
@@ -129,7 +134,7 @@ public class CaptchaController {
      * 2、同一邮箱所有模板 24 小时 100 条 <br>
      * 3、同一 IP 每分钟限制发送 30 条
      * </p>
-     * 
+     *
      * @param email 邮箱
      * @return /
      */
@@ -175,7 +180,7 @@ public class CaptchaController {
      * 2、同一号码所有模板 24 小时 100 条 <br>
      * 3、同一 IP 每分钟限制发送 30 条
      * </p>
-     * 
+     *
      * @param phone      手机号
      * @param captchaReq 行为验证码信息
      * @return /

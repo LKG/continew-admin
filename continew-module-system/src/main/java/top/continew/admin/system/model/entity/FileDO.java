@@ -94,20 +94,20 @@ public class FileDO extends BaseDO {
         fileInfo.setUrl(this.url);
         fileInfo.setSize(this.size);
         fileInfo.setFilename(StrUtil.contains(this.url, StringConstants.SLASH)
-                ? StrUtil.subAfter(this.url, StringConstants.SLASH, true)
-                : this.url);
+            ? StrUtil.subAfter(this.url, StringConstants.SLASH, true)
+            : this.url);
         fileInfo.setOriginalFilename(StrUtils
-                .blankToDefault(this.extension, this.name, ex -> this.name + StringConstants.DOT + ex));
+            .blankToDefault(this.extension, this.name, ex -> this.name + StringConstants.DOT + ex));
         fileInfo.setBasePath(StringConstants.EMPTY);
         // 优化 path 处理
-        fileInfo.setPath(extractRelativePath(this.url,storageDO));
+        fileInfo.setPath(extractRelativePath(this.url, storageDO));
 
         fileInfo.setExt(this.extension);
         fileInfo.setPlatform(storageDO.getCode());
         fileInfo.setThUrl(this.thumbnailUrl);
         fileInfo.setThFilename(StrUtil.contains(this.thumbnailUrl, StringConstants.SLASH)
-                ? StrUtil.subAfter(this.thumbnailUrl, StringConstants.SLASH, true)
-                : this.thumbnailUrl);
+            ? StrUtil.subAfter(this.thumbnailUrl, StringConstants.SLASH, true)
+            : this.thumbnailUrl);
         fileInfo.setThSize(this.thumbnailSize);
         return fileInfo;
     }
@@ -117,22 +117,21 @@ public class FileDO extends BaseDO {
      * 例如:
      * http://domain.cn/bucketName/2024/11/27/6746ec3b2907f0de80afdd70.png => 2024/11/27/
      * http://bucketName.domain.cn/2024/11/27/6746ec3b2907f0de80afdd70.png => 2024/11/27/
-     * @param url 文件路径
+     * 
+     * @param url       文件路径
      * @param storageDO 存储桶信息
      * @return
      */
     @SneakyThrows
     private static String extractRelativePath(String url, StorageDO storageDO) {
-         url = StrUtil.subBefore(url, StringConstants.SLASH, true) + StringConstants.SLASH;
-         if (storageDO.getType().equals(StorageTypeEnum.LOCAL)){
-             return url;
-         }
+        url = StrUtil.subBefore(url, StringConstants.SLASH, true) + StringConstants.SLASH;
+        if (storageDO.getType().equals(StorageTypeEnum.LOCAL)) {
+            return url;
+        }
         // 提取 URL 中的路径部分
         String fullPath = new URL(url).getPath();
         // 移除开头的斜杠
-        String relativePath = fullPath.startsWith(StringConstants.SLASH)
-                ? fullPath.substring(1)
-                : fullPath;
+        String relativePath = fullPath.startsWith(StringConstants.SLASH) ? fullPath.substring(1) : fullPath;
         // 如果路径以 bucketName 开头，则移除 bucketName 例如: bucketName/2024/11/27/ -> 2024/11/27/
         if (relativePath.startsWith(storageDO.getBucketName())) {
             return StrUtil.split(relativePath, storageDO.getBucketName()).get(1);

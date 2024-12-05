@@ -38,4 +38,9 @@ public enum OptionCategoryEnum {
      * 邮箱配置
      */
     MAIL,
+
+    /**
+     * 登录配置
+     */
+    LOGIN,
 }
