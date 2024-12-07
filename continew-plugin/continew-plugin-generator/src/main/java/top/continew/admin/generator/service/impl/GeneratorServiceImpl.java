@@ -90,21 +90,35 @@ public class GeneratorServiceImpl implements GeneratorService {
         if (StrUtil.isNotBlank(tableName)) {
             tableList.removeIf(table -> !StrUtil.containsAnyIgnoreCase(table.getTableName(), tableName));
         }
+        List<String> tableNames = tableList.stream().map(Table::getTableName).toList();
+        Map<String, GenConfigDO> configMap= tableNames.isEmpty() ? new HashMap<>() :  this.genConfigMapper.selectByIds(tableNames).stream()
+                .collect(Collectors.toMap(GenConfigDO::getTableName, Function.identity()));
+//        // 查询生成配置
+        List<GenConfigDO> list = tableList.stream()
+                .map(table -> {
+                    GenConfigDO genConfig = configMap.getOrDefault(table.getTableName(),new GenConfigDO(table.getTableName()));
+                    genConfig.setComment(table.getComment());
+                    return genConfig;
+                })
+                .sorted(Comparator.comparing(GenConfigDO::getTableName)
+                        .thenComparing(GenConfigDO::getUpdateTime, Comparator.nullsLast(Comparator.naturalOrder()))
+                        .thenComparing(GenConfigDO::getCreateTime, Comparator.nullsLast(Comparator.naturalOrder())))
+                .toList();
         // 查询生成配置
-        List<GenConfigDO> list = tableList.parallelStream().map(table -> {
-            GenConfigDO genConfig = genConfigMapper.selectById(table.getTableName());
-            if (genConfig == null) {
-                genConfig = new GenConfigDO(table.getTableName());
-            }
-            genConfig.setComment(table.getComment());
-            return genConfig;
-        })
-            .sorted(Comparator.comparing(GenConfigDO::getTableName)
-                .thenComparing(GenConfigDO::getUpdateTime, Comparator.nullsLast(Comparator.naturalOrder()))
-                .thenComparing(GenConfigDO::getCreateTime, Comparator.nullsLast(Comparator.naturalOrder())))
-            .toList();
+//        List<GenConfigDO> list = tableList.parallelStream().map(table -> {
+//            GenConfigDO genConfig = genConfigMapper.selectById(table.getTableName());
+//            if (genConfig == null) {
+//                genConfig = new GenConfigDO(table.getTableName());
+//            }
+//            genConfig.setComment(table.getComment());
+//            return genConfig;
+//        })
+//            .sorted(Comparator.comparing(GenConfigDO::getTableName)
+//                .thenComparing(GenConfigDO::getUpdateTime, Comparator.nullsLast(Comparator.naturalOrder()))
+//                .thenComparing(GenConfigDO::getCreateTime, Comparator.nullsLast(Comparator.naturalOrder())))
+//            .toList();
         // 分页
-        return PageResp.build(pageQuery.getPage(), pageQuery.getSize(), list);
+        return  PageResp.build(pageQuery.getPage(), pageQuery.getSize(), list);
     }
 
     @Override
