@@ -44,6 +44,7 @@
         <aws-s3.version>1.12.779</aws-s3.version>
         <commons-compress.version>1.27.1</commons-compress.version>
         <jetcache.version>2.7.7</jetcache.version>
+        <revision>3.4.1</revision>
     </properties>
 
     <!-- 全局依赖版本管理 -->
