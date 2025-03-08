@@ -35,6 +35,7 @@
         <!-- 项目版本号 -->
         <revision>3.5.0</revision>
         <mapstruct-plus.version>1.4.5</mapstruct-plus.version>
+        <continew-starter.version>2.9.0</continew-starter.version>
         <x-file.version>2.2.1</x-file.version>
         <aws-s3.version>1.12.780</aws-s3.version>
     </properties>
@@ -83,6 +84,22 @@
                 <artifactId>continew-plugin-generator</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <!-- mapstruct-plus- -->
+<!--            <dependency>-->
+<!--                <groupId>io.github.linpeilie</groupId>-->
+<!--                <artifactId>mapstruct-plus-spring-boot-starter</artifactId>-->
+<!--                <version>${mapstruct-plus.version}</version>-->
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.springframework.boot</groupId>-->
+<!--                        <artifactId>spring-boot-configuration-processor</artifactId>-->
+<!--                    </exclusion>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.springframework.boot</groupId>-->
+<!--                        <artifactId>spring-boot-autoconfigure</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
