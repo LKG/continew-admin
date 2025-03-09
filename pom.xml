@@ -96,6 +96,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional> <!-- 表示依赖不会被传递 -->
         </dependency>
+
     </dependencies>
 
     <build>
@@ -187,6 +188,7 @@
                     <plugin>
                         <groupId>org.sonarsource.scanner.maven</groupId>
                         <artifactId>sonar-maven-plugin</artifactId>
+                        <version>3.11.0.3922</version>
                         <executions>
                             <execution>
                                 <phase>verify</phase>
