@@ -35,7 +35,7 @@
         <!-- 项目版本号 -->
         <revision>3.5.0</revision>
         <mapstruct-plus.version>1.4.5</mapstruct-plus.version>
-        <continew-starter.version>2.9.0</continew-starter.version>
+        <continew-starter.version>${project.parent.version}</continew-starter.version>
         <x-file.version>2.2.1</x-file.version>
         <aws-s3.version>1.12.780</aws-s3.version>
     </properties>
