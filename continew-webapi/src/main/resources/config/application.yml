@@ -5,7 +5,7 @@ project:
   # 应用名称
   app-name: continew-admin
   # 版本
-  version: ${project.version}
+  version: @revision@
   # 描述
   description: 持续迭代优化的前后端分离中后台管理系统框架，开箱即用，持续提供舒适的开发体验。
   # 基本包
@@ -36,7 +36,7 @@ continew-starter.log:
 ## 项目日志配置
 logging:
   config: classpath:logback-spring.xml
-
+continew-starter.version: @continew-starter.version@
 --- ### 链路跟踪配置
 continew-starter.web:
   trace:
