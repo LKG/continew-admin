@@ -122,12 +122,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <delimiters>
-                        <delimiter>@</delimiter>
-                    </delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -139,14 +133,22 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/resources/${config-path}</directory>
+<!--                                    <excludes>-->
+<!--                                        <exclude>*.xlsx</exclude>-->
+<!--                                    </excludes>-->
+<!--                                    <filtering>true</filtering>-->
                                 </resource>
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <includes>
                                         <include>db/</include>
-                                        <include>templates/</include>
+                                        <include>templates</include>
                                         <include>logback-spring.xml</include>
                                     </includes>
+<!--                                    <excludes>-->
+<!--                                        <exclude>*.xlsx</exclude>-->
+<!--                                    </excludes>-->
+<!--                                    <filtering>true</filtering>-->
                                 </resource>
                             </resources>
                             <outputDirectory>${project.build.directory}/app/${config-path}</outputDirectory>
