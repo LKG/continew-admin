@@ -75,10 +75,12 @@ import top.continew.admin.system.model.resp.user.UserImportParseResp;
 import top.continew.admin.system.model.resp.user.UserImportResp;
 import top.continew.admin.system.model.resp.user.UserResp;
 import top.continew.admin.system.service.*;
+import top.continew.core.validator.ValidatorUtils;
 import top.continew.starter.cache.redisson.util.RedisUtils;
 import top.continew.starter.core.constant.StringConstants;
 import top.continew.starter.core.exception.BusinessException;
 import top.continew.starter.core.validation.CheckUtils;
+import top.continew.starter.core.validation.ValidationUtils;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.query.SortQuery;
 import top.continew.starter.extension.crud.model.resp.PageResp;
@@ -450,7 +452,16 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     public UserDO getByUsername(String username) {
         return baseMapper.selectByUsername(username);
     }
-
+    @Override
+    public UserDO getByAccount(String account) {
+        if(ValidatorUtils.isEmail(account)){
+            return baseMapper.selectByEmail(account);
+        }
+        if(ValidatorUtils.isPhone(account)){
+            return baseMapper.selectByPhone(account);
+        }
+        return baseMapper.selectByUsername(account);
+    }
     @Override
     public UserDO getByPhone(String phone) {
         return baseMapper.selectByPhone(phone);

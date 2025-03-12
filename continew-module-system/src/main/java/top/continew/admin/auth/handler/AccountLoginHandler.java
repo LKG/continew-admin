@@ -59,7 +59,7 @@ public class AccountLoginHandler extends AbstractLoginHandler<AccountLoginReq> {
         ValidationUtils.throwIfBlank(rawPassword, "密码解密失败");
         // 验证用户名密码
         String username = req.getUsername();
-        UserDO user = userService.getByUsername(username);
+        UserDO user = userService.getByAccount(username);
         boolean isError = ObjectUtil.isNull(user) || !passwordEncoder.matches(rawPassword, user.getPassword());
         // 检查账号锁定状态
         this.checkUserLocked(req.getUsername(), request, isError);

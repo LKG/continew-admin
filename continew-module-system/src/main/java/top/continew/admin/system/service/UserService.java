@@ -132,6 +132,16 @@ public interface UserService extends BaseService<UserResp, UserDetailResp, UserQ
      */
     UserDO getByUsername(String username);
 
+
+    /**
+     * 根据用户名查询
+     *
+     * @param account 用户名/手机号/邮箱
+     * @return 用户信息
+     */
+    UserDO getByAccount(String account);
+
+
     /**
      * 根据手机号查询
      *
