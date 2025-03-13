@@ -19,7 +19,6 @@ project:
   license:
     name: Apache-2.0
     url: https://github.com/continew-org/continew-admin/blob/dev/LICENSE
-
 --- ### 日志配置
 continew-starter.log:
   # 包含信息

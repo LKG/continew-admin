@@ -26,6 +26,8 @@
     <modules>
         <module>continew-webapi</module>
         <module>continew-module-system</module>
+        <module>continew-module-crm</module>
+        <module>continew-module-cms</module>
         <module>continew-plugin</module>
         <module>continew-common</module>
         <module>continew-extension</module>
@@ -34,6 +36,11 @@
     <properties>
         <!-- 项目版本号 -->
         <revision>3.5.0</revision>
+        <mapstruct-plus.version>1.4.5</mapstruct-plus.version>
+        <continew-starter.version>${project.parent.version}</continew-starter.version>
+        <dgraph4j.version>20.03.0</dgraph4j.version>
+        <x-file.version>2.2.1</x-file.version>
+        <aws-s3.version>1.12.780</aws-s3.version>
     </properties>
 
     <!-- 全局依赖版本管理 -->
@@ -52,7 +59,18 @@
                 <artifactId>continew-module-system</artifactId>
                 <version>${revision}</version>
             </dependency>
-
+            <!-- CRM模块（线索） -->
+            <dependency>
+                <groupId>top.continew</groupId>
+                <artifactId>continew-module-crm</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- CMS模块（线索） -->
+            <dependency>
+                <groupId>top.continew</groupId>
+                <artifactId>continew-module-cms</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- 公共模块（存放公共工具类，公共配置等） -->
             <dependency>
                 <groupId>top.continew</groupId>
