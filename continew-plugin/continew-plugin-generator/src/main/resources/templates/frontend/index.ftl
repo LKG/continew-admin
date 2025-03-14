@@ -181,15 +181,15 @@ const onExport = () => {
   useDownload(() => export${classNamePrefix}(queryForm))
 }
 
-const ${classNamePrefix}AddModalRef = ref<InstanceType<typeof ${classNamePrefix}AddModal>>()
+const ${classNamePrefix}AddDrawer = ref<InstanceType<typeof ${classNamePrefix}AddModal>>()
 // 新增
 const onAdd = () => {
-  ${classNamePrefix}AddModalRef.value?.onAdd()
+  ${classNamePrefix}AddDrawer.value?.onAdd()
 }
 
 // 修改
 const onUpdate = (record: ${classNamePrefix}Resp) => {
-  ${classNamePrefix}AddModalRef.value?.onUpdate(record.id)
+  ${classNamePrefix}AddDrawer.value?.onUpdate(record.id)
 }
 
 const ${classNamePrefix}DetailDrawerRef = ref<InstanceType<typeof ${classNamePrefix}DetailDrawer>>()

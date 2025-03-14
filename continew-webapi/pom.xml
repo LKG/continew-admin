@@ -36,6 +36,14 @@
             <groupId>top.continew</groupId>
             <artifactId>continew-module-system</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-module-cms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-module-crm</artifactId>
+        </dependency>
 
         <!-- 任务调度插件（后续会改造为独立插件） -->
         <dependency>

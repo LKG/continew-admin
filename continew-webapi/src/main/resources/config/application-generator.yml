@@ -125,7 +125,7 @@ generator:
       extension: .vue
       backend: false
     AddModal:
-      templatePath: frontend/AddModal.ftl
+      templatePath: frontend/AddDrawer.ftl
       packageName: src/views
       extension: .vue
       backend: false
