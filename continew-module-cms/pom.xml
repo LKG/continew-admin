@@ -10,12 +10,29 @@
 
     <artifactId>continew-module-cms</artifactId>
     <description>cms 模块</description>
+    <properties>
+        <!-- HTML解析组件 -->
+        <jsoup.version>1.19.1</jsoup.version>
+        <!-- HTML不安全代码过滤组件 -->
+        <owasp-java-html-sanitizer.version>20240325.1</owasp-java-html-sanitizer.version>
+    </properties>
 
     <dependencies>
         <!-- 公共模块（存放公共工具类，公共配置等） -->
         <dependency>
             <groupId>top.continew</groupId>
             <artifactId>continew-common</artifactId>
+        </dependency>
+        <!-- 解析 html 和过滤危险html代码 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>${owasp-java-html-sanitizer.version}</version>
         </dependency>
     </dependencies>
 
