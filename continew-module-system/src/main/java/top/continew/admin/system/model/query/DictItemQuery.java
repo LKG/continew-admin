@@ -42,7 +42,7 @@ public class DictItemQuery implements Serializable {
      * 关键词
      */
     @Schema(description = "关键词")
-    @Query(columns = {"label", "description"}, type = QueryType.LIKE)
+    @Query(columns = {"code", "label", "description"}, type = QueryType.LIKE)
     private String description;
 
     /**
@@ -50,6 +50,12 @@ public class DictItemQuery implements Serializable {
      */
     @Schema(description = "状态", example = "1")
     private DisEnableStatusEnum status;
+
+    /**
+     * 字典item级别
+     */
+    @Schema(description = "字典item级别")
+    private Integer itemLevel;
 
     /**
      * 字典 ID

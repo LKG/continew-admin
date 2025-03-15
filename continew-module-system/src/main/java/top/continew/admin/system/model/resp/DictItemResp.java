@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import top.continew.admin.common.model.resp.BaseDetailResp;
 import top.continew.admin.common.enums.DisEnableStatusEnum;
+import top.continew.starter.extension.crud.annotation.TreeField;
 import top.continew.starter.file.excel.converter.ExcelBaseEnumConverter;
 
 import java.io.Serial;
@@ -33,17 +34,23 @@ import java.io.Serial;
  */
 @Data
 @Schema(description = "字典项信息")
+@TreeField(value = "id", nameKey = "label")
 public class DictItemResp extends BaseDetailResp {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
+     * 编码
+     */
+    @Schema(description = "编码", example = "通知")
+    private String code;
+
+    /**
      * 标签
      */
     @Schema(description = "标签", example = "通知")
     private String label;
-
     /**
      * 值
      */
@@ -80,4 +87,20 @@ public class DictItemResp extends BaseDetailResp {
      */
     @Schema(description = "字典 ID", example = "1")
     private Long dictId;
+
+    /**
+     * 上级 ID
+     */
+    @Schema(description = "上级 ID", example = "0")
+    private Long parentId;
+
+    @Schema(hidden = true)
+    private Integer itemLevel;
+
+    @Schema(description = "拼音简码")
+    private String shortCodePinyin;
+    @Schema(description = "五笔简码")
+    private String shortCodeWb;
+    @Schema(description = "自定义简码")
+    private String shortCodeCustom;
 }

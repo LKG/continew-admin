@@ -16,6 +16,7 @@
 
 package top.continew.admin.system.service;
 
+import top.continew.admin.system.model.entity.DeptDO;
 import top.continew.admin.system.model.entity.DictItemDO;
 import top.continew.admin.system.model.query.DictItemQuery;
 import top.continew.admin.system.model.req.DictItemReq;
@@ -41,7 +42,13 @@ public interface DictItemService extends BaseService<DictItemResp, DictItemResp,
      * @return 字典项列表
      */
     List<LabelValueResp> listByDictCode(String dictCode);
-
+    /**
+     * 查询子字典项列表
+     *
+     * @param id ID
+     * @return 子字典项列表
+     */
+    List<DictItemDO> listChildren(Long id);
     /**
      * 根据字典 ID 列表删除
      *

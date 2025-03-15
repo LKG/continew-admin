@@ -41,8 +41,13 @@ public class DictItemReq implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 标签
+     * 编码
      */
+    @Schema(description = "编码", example = "item_code_1")
+    @NotBlank(message = "编码不能为空")
+    @Length(max = 30, message = "编码长度不能超过 {max} 个字符")
+    private String code;
+
     @Schema(description = "标签", example = "通知")
     @NotBlank(message = "标签不能为空")
     @Length(max = 30, message = "标签长度不能超过 {max} 个字符")
@@ -89,4 +94,28 @@ public class DictItemReq implements Serializable {
     @Schema(description = "所属字典", example = "1")
     @NotNull(message = "所属字典不能为空")
     private Long dictId;
+    /**
+     * 祖级列表
+     */
+    @Schema(hidden = true)
+    private String ancestors;
+
+    /**
+     * 层级
+     */
+    @Schema(hidden = true)
+    private Integer itemLevel;
+    /**
+     * 上级节点 ID
+     */
+    @Schema(description = "上级节点 ID", example = "2")
+    @NotNull(message = "上级节点不能为空")
+    private Long parentId;
+
+    @Schema(description = "拼音简码")
+    private String shortCodePinyin;
+    @Schema(description = "五笔简码")
+    private String shortCodeWb;
+    @Schema(description = "自定义简码")
+    private String shortCodeCustom;
 }

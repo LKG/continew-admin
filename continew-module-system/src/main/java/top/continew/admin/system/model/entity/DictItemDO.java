@@ -17,6 +17,7 @@
 package top.continew.admin.system.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import top.continew.admin.common.enums.DisEnableStatusEnum;
 import top.continew.admin.common.model.entity.BaseDO;
@@ -42,6 +43,15 @@ public class DictItemDO extends BaseDO {
     private String label;
 
     /**
+     * 上级 ID
+     */
+    private Long parentId;
+    /**
+     * 编码
+     */
+    private String code;
+
+    /**
      * 值
      */
     private String value;
@@ -55,6 +65,12 @@ public class DictItemDO extends BaseDO {
      * 排序
      */
     private Integer sort;
+
+
+    /**
+     * 层级
+     */
+    private Integer itemLevel;
 
     /**
      * 描述
@@ -70,4 +86,23 @@ public class DictItemDO extends BaseDO {
      * 字典ID
      */
     private Long dictId;
+    /**
+     * 祖级列表
+     */
+    private String ancestors;
+
+    /**
+     * 拼音简码
+     */
+    private String shortCodePinyin;
+
+    /**
+     * 五笔简码
+     */
+    private String shortCodeWb;
+
+    /**
+     * 自定义简码
+     */
+    private String shortCodeCustom;
 }
