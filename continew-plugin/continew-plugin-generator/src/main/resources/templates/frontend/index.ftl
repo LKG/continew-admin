@@ -1,7 +1,6 @@
 <template>
   <div class="gi_table_page">
     <GiTable
-      title="${businessName}管理"
       row-key="id"
       :data="dataList"
       :columns="columns"
@@ -13,7 +12,7 @@
       @refresh="search"
     >
       <#-- 查询字段配置 -->
-      <template #toolbar-left>
+      <template #toolbar-top>
       <#list fieldConfigs as fieldConfig>
       <#if fieldConfig.showInQuery>
 	  <#if fieldConfig.formType == "SELECT"><#-- 下拉框 -->
@@ -60,14 +59,14 @@
           <template #default>重置</template>
         </a-button>
       </template>
-      <template #toolbar-right>
+      <template #toolbar-left>
         <a-button v-permission="['${apiModuleName}:${apiName}:add']" type="primary" @click="onAdd">
           <template #icon><icon-plus /></template>
           <template #default>新增</template>
         </a-button>
         <a-button v-permission="['${apiModuleName}:${apiName}:export']" @click="onExport">
-          <template #icon><icon-download /></template>
-          <template #default>导出</template>
+          <template #icon><icon-upload /></template>
+          <template #default>导入</template>
         </a-button>
       </template>
       <#list fieldConfigs as fieldConfig>
