@@ -95,7 +95,7 @@
       </template>
     </GiTable>
 
-    <${classNamePrefix}AddModal ref="${classNamePrefix}AddModalRef" @save-success="search" />
+    <${classNamePrefix}AddDrawer ref="${classNamePrefix}AddDrawerRef" @save-success="search" />
     <${classNamePrefix}DetailDrawer ref="${classNamePrefix}DetailDrawerRef" />
   </div>
 </template>
