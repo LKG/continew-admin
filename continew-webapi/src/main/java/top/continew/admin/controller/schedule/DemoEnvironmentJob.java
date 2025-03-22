@@ -28,7 +28,11 @@ import top.continew.admin.common.constant.CacheConstants;
 import top.continew.admin.open.mapper.AppMapper;
 import top.continew.admin.open.model.entity.AppDO;
 import top.continew.admin.system.mapper.*;
+import top.continew.admin.system.mapper.user.UserMapper;
+import top.continew.admin.system.mapper.user.UserSocialMapper;
 import top.continew.admin.system.model.entity.*;
+import top.continew.admin.system.model.entity.user.UserDO;
+import top.continew.admin.system.model.entity.user.UserSocialDO;
 import top.continew.starter.cache.redisson.util.RedisUtils;
 import top.continew.starter.core.constant.StringConstants;
 
@@ -67,7 +71,7 @@ public class DemoEnvironmentJob {
     private static final Long MESSAGE_FLAG = 0L;
     private static final List<Long> USER_FLAG = List
         .of(1L, 547889293968801822L, 547889293968801823L, 547889293968801824L, 547889293968801825L, 547889293968801826L, 547889293968801827L, 547889293968801828L, 547889293968801829L, 547889293968801830L, 547889293968801831L);
-    private static final List<Long> ROLE_FLAG = List.of(1L, 547888897925840927L, 547888897925840928L);
+    private static final List<Long> ROLE_FLAG = List.of(1L, 2L, 547888897925840927L, 547888897925840928L);
     private static final Long DEPT_FLAG = 547887852587843611L;
 
     /**

@@ -14,47 +14,54 @@
  * limitations under the License.
  */
 
-package top.continew.admin.system.model.query;
+package top.continew.admin.system.model.entity.user;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import top.continew.starter.data.core.annotation.Query;
-import top.continew.starter.data.core.enums.QueryType;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * 短信记录查询条件
+ * 用户历史密码实体
  *
- * @author luoqiz
- * @since 2025/03/15 22:15
+ * @author Charles7c
+ * @since 2024/5/16 21:58
  */
 @Data
-@Schema(description = "短信记录查询条件")
-public class SmsRecordQuery implements Serializable {
+@NoArgsConstructor
+@TableName("sys_user_password_history")
+public class UserPasswordHistoryDO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 配置id
+     * ID
      */
-    @Schema(description = "配置id")
-    @Query(type = QueryType.EQ)
-    private Long configId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
     /**
-     * 手机号
+     * 用户 ID
      */
-    @Schema(description = "手机号")
-    @Query(type = QueryType.EQ)
-    private String phone;
+    private Long userId;
 
     /**
-     * 发送状态
+     * 密码
      */
-    @Schema(description = "发送状态")
-    @Query(type = QueryType.EQ)
-    private Boolean status;
+    private String password;
+
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    public UserPasswordHistoryDO(Long userId, String password) {
+        this.userId = userId;
+        this.password = password;
+    }
 }
