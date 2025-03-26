@@ -16,63 +16,49 @@
 
 package top.continew.admin.system.model.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import top.continew.admin.common.enums.SuccessFailureStatusEnum;
+import top.continew.admin.common.model.entity.BaseCreateDO;
 
 import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
- * 用户社会化关联实体
+ * 短信日志实体
  *
+ * @author luoqiz
  * @author Charles7c
- * @since 2023/10/11 22:10
+ * @since 2025/03/15 22:15
  */
 @Data
-@TableName("sys_user_social")
-public class UserSocialDO implements Serializable {
+@TableName("sys_sms_log")
+public class SmsLogDO extends BaseCreateDO {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * 配置 ID
      */
-    @TableId
-    private Long id;
+    private Long configId;
 
     /**
-     * 用户 ID
+     * 手机号
      */
-    private Long userId;
+    private String phone;
 
     /**
-     * 来源
+     * 参数配置
      */
-    private String source;
+    private String params;
 
     /**
-     * 开放 ID
+     * 发送状态
      */
-    private String openId;
+    private SuccessFailureStatusEnum status;
 
     /**
-     * 附加信息
+     * 返回数据
      */
-    private String metaJson;
-
-    /**
-     * 最后登录时间
-     */
-    private LocalDateTime lastLoginTime;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private String resMsg;
 }

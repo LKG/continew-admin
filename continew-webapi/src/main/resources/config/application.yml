@@ -20,8 +20,9 @@ project:
     name: Apache-2.0
     url: https://github.com/continew-org/continew-admin/blob/dev/LICENSE
 --- ### 日志配置
+## API 请求/响应日志配置
 continew-starter.log:
-  # 包含信息
+  # 记录信息
   includes:
     - DESCRIPTION
     - MODULE
@@ -171,12 +172,6 @@ mybatis-plus:
       # 主键类型（默认 assign_id，表示自行赋值）
       # auto 代表使用数据库自增策略（需要在表中设置好自增约束）
       id-type: ASSIGN_ID
-      # 逻辑删除字段
-      logic-delete-field: isDeleted
-      # 逻辑删除全局值（默认 1，表示已删除）
-      logic-delete-value: 1
-      # 逻辑未删除全局值（默认 0，表示未删除）
-      logic-not-delete-value: 0
   ## 扩展配置
   extension:
     enabled: true

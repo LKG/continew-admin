@@ -60,8 +60,8 @@ VALUES
 
 (1090, '通知公告', 1000, 2, '/system/notice', 'SystemNotice', 'system/notice/index', NULL, 'notification', b'0', b'0', b'0', NULL, 6, 1, 1, NOW()),
 (1091, '列表', 1090, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:notice:list', 1, 1, 1, NOW()),
-(1092, '详情', 1090, 2, '/system/notice/detail', 'SystemNoticeDetail', 'system/notice/detail/index', NULL, NULL, b'0', b'0', b'1', 'system:notice:detail', 2, 1, 1, NOW()),
-(1093, '新增', 1090, 2, '/system/notice/add', 'SystemNoticeAdd', 'system/notice/add/index', NULL, NULL, b'0', b'0', b'1', 'system:notice:add', 3, 1, 1, NOW()),
+(1092, '公告详情', 1090, 2, '/system/notice/detail', 'SystemNoticeDetail', 'system/notice/detail/index', NULL, NULL, b'0', b'0', b'1', 'system:notice:detail', 2, 1, 1, NOW()),
+(1093, '发布公告', 1090, 2, '/system/notice/add', 'SystemNoticeAdd', 'system/notice/add/index', NULL, NULL, b'0', b'0', b'1', 'system:notice:add', 3, 1, 1, NOW()),
 (1094, '修改', 1090, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:notice:update', 4, 1, 1, NOW()),
 (1095, '删除', 1090, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:notice:delete', 5, 1, 1, NOW()),
 
@@ -94,17 +94,19 @@ VALUES
 (1192, '修改', 1190, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:config:update', 2, 1, 1, NOW()),
 (1193, '重置', 1190, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:config:reset', 3, 1, 1, NOW()),
 
-(1194, '短信配置', 1000, 2, '/system/sms/config', 'SmsConfig', 'system/sms/config/index', NULL, 'message', b'0', b'0', b'0', NULL, 6, 1, 1, NOW()),
-(1195, '列表', 1194, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:list', 1, 1, 1, NOW()),
-(1196, '详情', 1194, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:detail', 2, 1, 1, NOW()),
-(1197, '新增', 1194, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:add', 3, 1, 1, NOW()),
-(1198, '修改', 1194, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:update', 4, 1, 1, NOW()),
-(1199, '删除', 1194, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:delete', 5, 1, 1, NOW()),
-(1200, '导出', 1194, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:export', 6, 1, 1, NOW()),
-(1201, '短信记录', 1000, 2, '/system/sms/record', 'SmsRecord', 'system/sms/record/index', NULL, NULL, b'0', b'0', b'0', NULL, 1, 1, 1, NOW()),
-(1202, '列表', 1201, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsRecord:list', 1, 1, 1, NOW()),
-(1203, '删除', 1201, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsRecord:delete', 5, 1, 1, NOW()),
-(1204, '导出', 1201, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsRecord:export', 6, 1, 1, NOW()),
+(1200, '短信配置', 1000, 1, '/system/sms', 'SystemSms', 'Layout', '/system/sms/config', 'message', b'0', b'0', b'0', NULL, 1000, 1, 1, NOW()),
+(1210, '短信配置', 1200, 2, '/system/sms/config', 'SystemSmsConfig', 'system/sms/config/index', NULL, 'message', b'0', b'0', b'0', NULL, 1, 1, 1, NOW()),
+(1211, '列表', 1210, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:list', 1, 1, 1, NOW()),
+(1212, '详情', 1210, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:detail', 2, 1, 1, NOW()),
+(1213, '新增', 1210, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:add', 3, 1, 1, NOW()),
+(1214, '修改', 1210, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:update', 4, 1, 1, NOW()),
+(1215, '删除', 1210, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:delete', 5, 1, 1, NOW()),
+(1216, '导出', 1210, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsConfig:export', 6, 1, 1, NOW()),
+
+(1220, '短信日志', 1200, 2, '/system/sms/log', 'SystemSmsLog', 'system/sms/log/index', NULL, 'history', b'0', b'0', b'0', NULL, 2, 1, 1, NOW()),
+(1221, '列表', 1220, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsLog:list', 1, 1, 1, NOW()),
+(1222, '删除', 1220, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsLog:delete', 2, 1, 1, NOW()),
+(1223, '导出', 1220, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'system:smsLog:export', 3, 1, 1, NOW()),
 
 (2000, '系统监控', 0, 1, '/monitor', 'Monitor', 'Layout', '/monitor/online', 'computer', b'0', b'0', b'0', NULL, 2, 1, 1, NOW()),
 (2010, '在线用户', 2000, 2, '/monitor/online', 'MonitorOnline', 'monitor/online/index', NULL, 'user', b'0', b'0', b'0', NULL, 1, 1, 1, NOW()),
@@ -154,8 +156,9 @@ INSERT INTO `sys_role`
 (`id`, `name`, `code`, `data_scope`, `description`, `sort`, `is_system`, `create_user`, `create_time`)
 VALUES
 (1, '系统管理员', 'admin', 1, '系统初始角色', 1, b'1', 1, NOW()),
-(547888897925840927, '测试人员', 'tester', 5, NULL, 2, b'0', 1, NOW()),
-(547888897925840928, '研发人员', 'developer', 4, NULL, 3, b'0', 1, NOW());
+(2, '普通用户', 'general', 4, '系统初始角色', 2, b'1', 1, NOW()),
+(547888897925840927, '测试人员', 'tester', 5, NULL, 3, b'0', 1, NOW()),
+(547888897925840928, '研发人员', 'developer', 4, NULL, 4, b'0', 1, NOW());
 
 -- 初始化默认用户：admin/admin123；test/test123
 INSERT INTO `sys_user`
@@ -211,13 +214,13 @@ VALUES
 INSERT INTO `sys_dict_item`
 (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`)
 VALUES
-(1, '通知', '1', 'blue', 1, NULL, 1, 1, 1, NOW()),
-(2, '活动', '2', 'orangered', 2, NULL, 1, 1, 1, NOW()),
-(3, '安全消息', '1', 'blue', 1, NULL, 1, 2, 1, NOW()),
-(4, '活动消息', '2', 'orangered', 2, NULL, 1, 2, 1, NOW()),
-(5, '桌面端', 'PC', 'blue', 1, NULL, 1, 3, 1, NOW()),
-(6, '安卓', 'ANDROID', '#148628', 2, NULL, 1, 3, 1, NOW()),
-(7, '小程序', 'XCX', '#7930AD', 3, NULL, 1, 3, 1, NOW());
+(1, '通知', '1', 'primary', 1, NULL, 1, 1, 1, NOW()),
+(2, '活动', '2', 'success', 2, NULL, 1, 1, 1, NOW()),
+(3, '安全消息', '1', 'warning', 1, NULL, 1, 2, 1, NOW()),
+(4, '活动消息', '2', 'success', 2, NULL, 1, 2, 1, NOW()),
+(5, '桌面端', 'PC', 'primary', 1, NULL, 1, 3, 1, NOW()),
+(6, '安卓', 'ANDROID', 'success', 2, NULL, 1, 3, 1, NOW()),
+(7, '小程序', 'XCX', 'warning', 3, NULL, 1, 3, 1, NOW());
 
 -- 初始化默认用户和角色关联数据
 INSERT INTO `sys_user_role`

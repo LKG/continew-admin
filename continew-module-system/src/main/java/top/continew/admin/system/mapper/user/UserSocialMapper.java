@@ -14,42 +14,26 @@
  * limitations under the License.
  */
 
-package top.continew.admin.common.enums;
+package top.continew.admin.system.mapper.user;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import top.continew.starter.core.enums.BaseEnum;
+import org.apache.ibatis.annotations.Param;
+import top.continew.admin.system.model.entity.user.UserSocialDO;
+import top.continew.starter.data.mp.base.BaseMapper;
 
 /**
- * 方法类型枚举
+ * 用户社会化关联 Mapper
  *
- * @author luoqiz
- * @since 2025/03/16 13:38
+ * @author Charles7c
+ * @since 2023/10/11 22:10
  */
-@Getter
-@RequiredArgsConstructor
-public enum MethodTypeEnum implements BaseEnum<String> {
+public interface UserSocialMapper extends BaseMapper<UserSocialDO> {
 
     /**
-     * 新增
+     * 根据来源和开放 ID 查询
+     *
+     * @param source 来源
+     * @param openId 开放 ID
+     * @return 用户社会化关联信息
      */
-    ADD("add", "新增"),
-
-    /**
-     * 更新
-     */
-    UPDATE("update", "更新"),
-
-    /**
-     * 删除
-     */
-    DELETE("delete", "删除"),
-    /**
-     * 删除
-     */
-    SEARCH("search", "查询"),;
-
-    private final String value;
-    private final String description;
-
+    UserSocialDO selectBySourceAndOpenId(@Param("source") String source, @Param("openId") String openId);
 }
