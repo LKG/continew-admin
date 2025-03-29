@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package top.continew.admin.common.model.req;
+package top.continew.admin.schedule.api;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import top.continew.admin.common.enums.DisEnableStatusEnum;
+import com.aizuda.snailjob.common.core.model.Result;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import top.continew.admin.schedule.config.FeignRequestInterceptor;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * 修改状态请求参数
+ * 任务组 REST API
  *
  * @author Charles7c
- * @since 2025/3/4 20:09
+ * @since 2025/3/28 22:25
  */
-@Data
-@Schema(description = "修改状态请求参数")
-public class CommonStatusUpdateReq implements Serializable {
+@FeignClient(value = "job-group", url = "${snail-job.server.api.url}", path = "/group", configuration = FeignRequestInterceptor.class)
+public interface JobGroupApi {
 
     /**
-     * 状态
+     * 查询分组列表
+     *
+     * @return 响应信息
      */
-    @Schema(description = "状态", example = "1")
-    @NotNull(message = "状态无效")
-    private DisEnableStatusEnum status;
+    @GetMapping("/all/group-name/list")
+    Result<List<String>> listGroup();
 }

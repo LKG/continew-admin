@@ -14,43 +14,38 @@
  * limitations under the License.
  */
 
-package top.continew.admin.system.model.query;
+package top.continew.admin.schedule.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import top.continew.admin.system.enums.OptionCategoryEnum;
-import top.continew.starter.core.validation.constraints.EnumValue;
-import top.continew.starter.data.core.annotation.Query;
-import top.continew.starter.data.core.enums.QueryType;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 参数查询条件
+ * 执行任务参数
  *
- * @author Bull-BCLS
- * @since 2023/8/26 19:38
+ * @author Charles7c
+ * @since 2025/3/26 21:50
  */
 @Data
-@Schema(description = "参数查询条件")
-public class OptionQuery implements Serializable {
+@Schema(description = "执行任务参数")
+public class JobTriggerReq implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 键列表
+     * ID
      */
-    @Schema(description = "键列表", example = "SITE_TITLE,SITE_COPYRIGHT")
-    @Query(type = QueryType.IN)
-    private List<String> code;
+    @Schema(description = "ID", example = "1")
+    @NotNull(message = "ID不能为空")
+    private Long jobId;
 
     /**
-     * 类别
+     * 方法参数
      */
-    @Schema(description = "类别", example = "SITE")
-    @EnumValue(value = OptionCategoryEnum.class, message = "类别无效")
-    private String category;
+    @Schema(description = "方法参数")
+    private String tmpArgsStr;
 }
