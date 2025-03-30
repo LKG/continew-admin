@@ -14,43 +14,39 @@
  * limitations under the License.
  */
 
-package top.continew.admin.system.model.query;
+package top.continew.admin.schedule.model.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
-import top.continew.admin.system.enums.OptionCategoryEnum;
-import top.continew.starter.core.validation.constraints.EnumValue;
-import top.continew.starter.data.core.annotation.Query;
-import top.continew.starter.data.core.enums.QueryType;
+import org.hibernate.validator.constraints.Range;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 参数查询条件
+ * 任务分页查询条件
  *
- * @author Bull-BCLS
- * @since 2023/8/26 19:38
+ * @author Charles7c
+ * @since 2025/3/28 21:55
  */
 @Data
-@Schema(description = "参数查询条件")
-public class OptionQuery implements Serializable {
+public class JobPageQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 键列表
+     * 页码
      */
-    @Schema(description = "键列表", example = "SITE_TITLE,SITE_COPYRIGHT")
-    @Query(type = QueryType.IN)
-    private List<String> code;
+    @Schema(description = "页码", example = "1")
+    @Min(value = 1, message = "页码最小值为 {value}")
+    private Integer page = 1;
 
     /**
-     * 类别
+     * 每页条数
      */
-    @Schema(description = "类别", example = "SITE")
-    @EnumValue(value = OptionCategoryEnum.class, message = "类别无效")
-    private String category;
+    @Schema(description = "每页条数", example = "10")
+    @Range(min = 1, max = 1000, message = "每页条数（取值范围 {min}-{max}）")
+    private Integer size = 10;
 }

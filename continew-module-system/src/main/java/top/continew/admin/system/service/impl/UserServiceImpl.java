@@ -138,7 +138,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     }
 
     @Override
-    public void beforeAdd(UserReq req) {
+    public void beforeCreate(UserReq req) {
         final String errorMsgTemplate = "新增失败，[{}] 已存在";
         String username = req.getUsername();
         CheckUtils.throwIf(this.isNameExists(username, null), errorMsgTemplate, username);
@@ -149,7 +149,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     }
 
     @Override
-    public void afterAdd(UserReq req, UserDO user) {
+    public void afterCreate(UserReq req, UserDO user) {
         Long userId = user.getId();
         baseMapper.lambdaUpdate().set(UserDO::getPwdResetTime, LocalDateTime.now()).eq(UserDO::getId, userId).update();
         // 保存用户和角色关联
@@ -254,11 +254,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
         }
         // 总计行数
         userImportResp.setTotalRows(importRowList.size());
-        CheckUtils.throwIfEmpty(importRowList, "数据文件格式错误");
+        CheckUtils.throwIfEmpty(importRowList, "数据文件格式不正确");
         // 有效行数：过滤无效数据
         List<UserImportRowReq> validRowList = this.filterImportData(importRowList);
         userImportResp.setValidRows(validRowList.size());
-        CheckUtils.throwIfEmpty(validRowList, "数据文件格式错误");
+        CheckUtils.throwIfEmpty(validRowList, "数据文件格式不正确");
 
         // 检测表格内数据是否合法
         Set<String> seenEmails = new HashSet<>();
@@ -272,14 +272,14 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
             .anyMatch(phone -> phone != null && !seenPhones.add(phone));
         CheckUtils.throwIf(hasDuplicatePhone, "存在重复手机，请检测数据");
 
-        // 校验是否存在错误角色
+        // 校验是否存在无效角色
         List<String> roleNames = validRowList.stream().map(UserImportRowReq::getRoleName).distinct().toList();
         int existRoleCount = roleService.countByNames(roleNames);
-        CheckUtils.throwIf(existRoleCount < roleNames.size(), "存在错误角色，请检查数据");
-        // 校验是否存在错误部门
+        CheckUtils.throwIf(existRoleCount < roleNames.size(), "存在无效角色，请检查数据");
+        // 校验是否存在无效部门
         List<String> deptNames = validRowList.stream().map(UserImportRowReq::getDeptName).distinct().toList();
         int existDeptCount = deptService.countByNames(deptNames);
-        CheckUtils.throwIf(existDeptCount < deptNames.size(), "存在错误部门，请检查数据");
+        CheckUtils.throwIf(existDeptCount < deptNames.size(), "存在无效部门，请检查数据");
 
         // 查询重复用户
         userImportResp
@@ -426,7 +426,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
         UserDO user = super.getById(id);
         String password = user.getPassword();
         if (StrUtil.isNotBlank(password)) {
-            CheckUtils.throwIf(!passwordEncoder.matches(oldPassword, password), "当前密码错误");
+            CheckUtils.throwIf(!passwordEncoder.matches(oldPassword, password), "当前密码不正确");
         }
         // 校验密码合法性
         int passwordRepetitionTimes = this.checkPassword(newPassword, user);
@@ -445,7 +445,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     @Override
     public void updatePhone(String newPhone, String oldPassword, Long id) {
         UserDO user = super.getById(id);
-        CheckUtils.throwIf(!passwordEncoder.matches(oldPassword, user.getPassword()), "当前密码错误");
+        CheckUtils.throwIf(!passwordEncoder.matches(oldPassword, user.getPassword()), "当前密码不正确");
         CheckUtils.throwIf(this.isPhoneExists(newPhone, id), "手机号已绑定其他账号，请更换其他手机号");
         CheckUtils.throwIfEqual(newPhone, user.getPhone(), "新手机号不能与当前手机号相同");
         // 更新手机号
@@ -455,7 +455,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     @Override
     public void updateEmail(String newEmail, String oldPassword, Long id) {
         UserDO user = super.getById(id);
-        CheckUtils.throwIf(!passwordEncoder.matches(oldPassword, user.getPassword()), "当前密码错误");
+        CheckUtils.throwIf(!passwordEncoder.matches(oldPassword, user.getPassword()), "当前密码不正确");
         CheckUtils.throwIf(this.isEmailExists(newEmail, id), "邮箱已绑定其他账号，请更换其他邮箱");
         CheckUtils.throwIfEqual(newEmail, user.getEmail(), "新邮箱不能与当前邮箱相同");
         // 更新邮箱
@@ -512,7 +512,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     protected QueryWrapper<UserDO> buildQueryWrapper(UserQuery query) {
         String description = query.getDescription();
         DisEnableStatusEnum status = query.getStatus();
-        List<Date> createTimeList = query.getCreateTime();
+        List<LocalDateTime> createTimeList = query.getCreateTime();
         Long deptId = query.getDeptId();
         List<Long> userIdList = query.getUserIds();
         // 获取排除用户 ID 列表
