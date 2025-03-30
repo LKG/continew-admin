@@ -22,5 +22,5 @@ import top.continew.admin.crm.service.OwnerRecordService;
  */
 @Tag(name = "负责人变更记录管理 API")
 @RestController
-@CrudRequestMapping(value = "/crm/ownerRecord", api = {Api.PAGE, Api.DETAIL, Api.ADD, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@CrudRequestMapping(value = "/crm/ownerRecord", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 public class OwnerRecordController extends BaseController<OwnerRecordService, OwnerRecordResp, OwnerRecordDetailResp, OwnerRecordQuery, OwnerRecordReq> {}

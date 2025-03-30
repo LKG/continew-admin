@@ -22,5 +22,5 @@ import top.continew.admin.crm.service.ActionRecordService;
  */
 @Tag(name = "字段操作记录管理 API")
 @RestController
-@CrudRequestMapping(value = "/crm/actionRecord", api = {Api.PAGE, Api.DETAIL, Api.ADD, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@CrudRequestMapping(value = "/crm/actionRecord", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 public class ActionRecordController extends BaseController<ActionRecordService, ActionRecordResp, ActionRecordDetailResp, ActionRecordQuery, ActionRecordReq> {}

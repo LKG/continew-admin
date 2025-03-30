@@ -22,5 +22,5 @@ import top.continew.admin.crm.service.CustomerPoolService;
  */
 @Tag(name = "公海管理 API")
 @RestController
-@CrudRequestMapping(value = "/crm/customerPool", api = {Api.PAGE, Api.DETAIL, Api.ADD, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@CrudRequestMapping(value = "/crm/customerPool", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 public class CustomerPoolController extends BaseController<CustomerPoolService, CustomerPoolResp, CustomerPoolDetailResp, CustomerPoolQuery, CustomerPoolReq> {}

@@ -22,5 +22,5 @@ import top.continew.admin.crm.service.LeadsDataService;
  */
 @Tag(name = "线索自定义字段存值管理 API")
 @RestController
-@CrudRequestMapping(value = "/crm/leadsData", api = {Api.PAGE, Api.DETAIL, Api.ADD, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@CrudRequestMapping(value = "/crm/leadsData", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 public class LeadsDataController extends BaseController<LeadsDataService, LeadsDataResp, LeadsDataDetailResp, LeadsDataQuery, LeadsDataReq> {}
