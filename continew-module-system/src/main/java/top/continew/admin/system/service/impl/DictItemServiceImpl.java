@@ -30,6 +30,7 @@ import top.continew.admin.common.constant.CacheConstants;
 import top.continew.admin.common.enums.DisEnableStatusEnum;
 import top.continew.admin.system.mapper.DictItemMapper;
 import top.continew.admin.system.model.entity.DeptDO;
+import top.continew.admin.system.model.entity.DictDO;
 import top.continew.admin.system.model.entity.DictItemDO;
 import top.continew.admin.system.model.query.DictItemQuery;
 import top.continew.admin.system.model.req.DictItemReq;
@@ -87,7 +88,8 @@ public class DictItemServiceImpl extends BaseServiceImpl<DictItemMapper, DictIte
      */
     private String getAncestors(Long parentId) {
         DictItemDO parent = this.getByParentId(parentId);
-        return "%s,%s".formatted(parent.getAncestors(), parentId);
+        String ancestors = Optional.ofNullable(parent.getAncestors()).orElse("0");
+        return "%s,%s".formatted(ancestors, parentId);
     }
     /**
      * 根据节点部门 ID 查询
@@ -135,6 +137,14 @@ public class DictItemServiceImpl extends BaseServiceImpl<DictItemMapper, DictIte
                     .ifPresent(list -> req.setItemLevel(list.size()));
         }
         RedisUtils.deleteByPattern(CacheConstants.DICT_KEY_PREFIX + StringConstants.ASTERISK);
+    }
+    @Override
+    public void beforeDelete(List<Long> ids) {
+       Long  count = baseMapper.lambdaQuery()
+                .select(DictItemDO::getLabel)
+                .in(DictItemDO::getParentId, ids)
+                .count();
+        CheckUtils.throwIf(count > 0, "所选字典有 [{}] 个子级，不允许删除", count);
     }
     /**
      * 更新子级祖级列表
