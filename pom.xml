@@ -26,6 +26,7 @@
     <modules>
         <module>continew-webapi</module>
         <module>continew-module-system</module>
+        <module>continew-module-member</module>
         <module>continew-module-crm</module>
         <module>continew-module-cms</module>
         <module>continew-plugin</module>
