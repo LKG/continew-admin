@@ -12,7 +12,7 @@ import java.io.Serial;
  * 站点表实体
  *
  * @author gg
- * @since 2025/04/01 19:23
+ * @since 2025/04/05 19:44
  */
 @Data
 @TableName("cms_site")
@@ -32,6 +32,11 @@ public class SiteDO extends BaseDO {
     private String domain;
 
     /**
+     * 站点目录
+     */
+    private String path;
+
+    /**
      * logo
      */
     private String logo;
@@ -40,4 +45,9 @@ public class SiteDO extends BaseDO {
      * 上级站点id
      */
     private Long parentId;
+
+    /**
+     * 排序标识
+     */
+    private Integer sortNum;
 }

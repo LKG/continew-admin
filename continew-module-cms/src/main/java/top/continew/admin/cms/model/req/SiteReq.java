@@ -16,7 +16,7 @@ import java.time.*;
  * 创建或修改站点表参数
  *
  * @author gg
- * @since 2025/04/01 19:23
+ * @since 2025/04/05 19:44
  */
 @Data
 @Schema(description = "创建或修改站点表参数")
@@ -41,6 +41,13 @@ public class SiteReq implements Serializable {
     private String domain;
 
     /**
+     * 站点目录
+     */
+    @Schema(description = "站点目录")
+    @Length(max = 255, message = "站点目录长度不能超过 {max} 个字符")
+    private String path;
+
+    /**
      * logo
      */
     @Schema(description = "logo")
@@ -53,4 +60,11 @@ public class SiteReq implements Serializable {
     @Schema(description = "上级站点id")
     @NotNull(message = "上级站点id不能为空")
     private Long parentId;
+
+    /**
+     * 排序标识
+     */
+    @Schema(description = "排序标识")
+    @NotNull(message = "排序标识不能为空")
+    private Integer sortNum;
 }

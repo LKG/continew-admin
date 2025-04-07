@@ -18,9 +18,9 @@ import top.continew.admin.cms.service.SiteService;
  * 站点表管理 API
  *
  * @author gg
- * @since 2025/04/01 19:23
+ * @since 2025/04/05 19:44
  */
 @Tag(name = "站点表管理 API")
 @RestController
-@CrudRequestMapping(value = "/cms/site", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@CrudRequestMapping(value = "/cms/site", api = {Api.TREE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 public class SiteController extends BaseController<SiteService, SiteResp, SiteDetailResp, SiteQuery, SiteReq> {}

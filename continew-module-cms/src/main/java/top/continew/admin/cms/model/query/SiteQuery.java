@@ -15,7 +15,7 @@ import java.time.*;
  * 站点表查询条件
  *
  * @author gg
- * @since 2025/04/01 19:23
+ * @since 2025/04/05 19:44
  */
 @Data
 @Schema(description = "站点表查询条件")
@@ -44,6 +44,13 @@ public class SiteQuery implements Serializable {
     @Schema(description = "上级站点id")
     @Query(type = QueryType.EQ)
     private Long parentId;
+
+    /**
+     * 排序标识
+     */
+    @Schema(description = "排序标识")
+    @Query(type = QueryType.EQ)
+    private Integer sortNum;
 
     /**
      * 创建人
