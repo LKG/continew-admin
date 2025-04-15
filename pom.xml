@@ -41,7 +41,7 @@
         <dgraph4j.version>20.03.0</dgraph4j.version>
         <x-file.version>2.2.1</x-file.version>
         <aws-s3.version>1.12.780</aws-s3.version>
-        <revision>3.6.0-SNAPSHOT</revision>
+        <revision>3.6.0</revision>
     </properties>
 
     <!-- 全局依赖版本管理 -->
