@@ -16,13 +16,13 @@
 
 package top.continew.admin.system.service;
 
-import top.continew.admin.system.model.entity.DeptDO;
+
+import top.continew.admin.common.service.CommonDictItemService;
 import top.continew.admin.system.model.entity.DictItemDO;
 import top.continew.admin.system.model.query.DictItemQuery;
 import top.continew.admin.system.model.req.DictItemReq;
 import top.continew.admin.system.model.resp.DictItemResp;
 import top.continew.starter.data.mp.service.IService;
-import top.continew.starter.extension.crud.model.resp.LabelValueResp;
 import top.continew.starter.extension.crud.service.BaseService;
 
 import java.util.List;
@@ -33,15 +33,8 @@ import java.util.List;
  * @author Charles7c
  * @since 2023/9/11 21:29
  */
-public interface DictItemService extends BaseService<DictItemResp, DictItemResp, DictItemQuery, DictItemReq>, IService<DictItemDO> {
+public interface DictItemService extends BaseService<DictItemResp, DictItemResp, DictItemQuery, DictItemReq>, IService<DictItemDO>, CommonDictItemService {
 
-    /**
-     * 根据字典编码查询
-     *
-     * @param dictCode 字典编码
-     * @return 字典项列表
-     */
-    List<LabelValueResp> listByDictCode(String dictCode);
     /**
      * 查询子字典项列表
      *
