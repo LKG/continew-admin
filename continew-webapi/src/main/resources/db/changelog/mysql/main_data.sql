@@ -101,7 +101,7 @@ VALUES
 (1235, '删除', 1230, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:storage:delete', 5, 1, 1, NOW()),
 (1236, '修改状态', 1230, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:storage:updateStatus', 6, 1, 1, NOW()),
 (1237, '设为默认存储', 1230, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:storage:setDefault', 7, 1, 1, NOW()),
-(1250, '终端配置', 1150, 2, '/system/config?tab=client', 'SystemClient', 'system/config/client/index', NULL, 'mobile', b'0', b'0', b'1', NULL, 7, 1, 1, NOW()),
+(1250, '客户端配置', 1150, 2, '/system/config?tab=client', 'SystemClient', 'system/config/client/index', NULL, 'mobile', b'0', b'0', b'1', NULL, 7, 1, 1, NOW()),
 (1251, '列表', 1250, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:client:list', 1, 1, 1, NOW()),
 (1252, '详情', 1250, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:client:get', 2, 1, 1, NOW()),
 (1253, '新增', 1250, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'system:client:create', 3, 1, 1, NOW()),
@@ -214,7 +214,8 @@ INSERT INTO `sys_dict`
 VALUES
 (1, '公告类型', 'notice_type', NULL, b'1', 1, NOW()),
 (2, '消息类型', 'message_type', NULL, b'1', 1, NOW()),
-(3, '终端类型', 'client_type', NULL, b'1', 1, NOW());
+(3, '客户端类型', 'client_type', NULL, b'1', 1, NOW()),
+(4, '短信厂商', 'sms_supplier', NULL, b'1', 1, NOW());
 
 INSERT INTO `sys_dict_item`
 (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`)
@@ -225,7 +226,10 @@ VALUES
 (4, '活动消息', '2', 'success', 2, NULL, 1, 2, 1, NOW()),
 (5, '桌面端', 'PC', 'primary', 1, NULL, 1, 3, 1, NOW()),
 (6, '安卓', 'ANDROID', 'success', 2, NULL, 1, 3, 1, NOW()),
-(7, '小程序', 'XCX', 'warning', 3, NULL, 1, 3, 1, NOW());
+(7, '小程序', 'XCX', 'warning', 3, NULL, 1, 3, 1, NOW()),
+(8, '阿里云', 'alibaba', 'warning', 1, NULL, 1, 4, 1, NOW()),
+(9, '腾讯云', 'tencent', 'primary', 2, NULL, 1, 4, 1, NOW()),
+(10, '容联云', 'cloopen', 'success', 3, NULL, 1, 4, 1, NOW());
 
 -- 初始化默认用户和角色关联数据
 INSERT INTO `sys_user_role`
@@ -271,7 +275,7 @@ VALUES
 (1, '开发环境', 'local_dev', 1, NULL, NULL, NULL, 'C:/continew-admin/data/file/', 'http://localhost:8000/file', '本地存储', b'1', 1, 1, 1, NOW()),
 (2, '生产环境', 'local_prod', 1, NULL, NULL, NULL, '../data/file/', 'http://api.continew.top/file', '本地存储', b'0', 2, 2, 1, NOW());
 
--- 初始化终端数据
+-- 初始化客户端数据
 INSERT INTO `sys_client`
 (`id`, `client_id`, `client_type`, `auth_type`, `active_timeout`, `timeout`, `status`, `create_user`, `create_time`)
 VALUES

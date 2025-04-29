@@ -16,12 +16,11 @@
 
 package top.continew.admin.system.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import org.dromara.sms4j.core.factory.SmsFactory;
 import org.dromara.sms4j.provider.config.BaseConfig;
 import org.springframework.stereotype.Service;
-import top.continew.admin.system.enums.SmsSupplierEnum;
+import top.continew.admin.system.config.sms.SmsConfigUtil;
 import top.continew.admin.system.mapper.SmsConfigMapper;
 import top.continew.admin.system.model.entity.SmsConfigDO;
 import top.continew.admin.system.model.query.SmsConfigQuery;
@@ -69,9 +68,11 @@ public class SmsConfigServiceImpl extends BaseServiceImpl<SmsConfigMapper, SmsCo
      * @param entity 配置信息
      */
     private void load(SmsConfigDO entity) {
-        SmsSupplierEnum supplier = entity.getSupplier();
-        BaseConfig config = supplier.toBaseConfig(BeanUtil.toBean(entity, SmsConfigResp.class));
-        SmsFactory.createSmsBlend(config);
+        SmsConfigResp smsConfig = this.get(entity.getId());
+        BaseConfig config = SmsConfigUtil.from(smsConfig);
+        if (config != null) {
+            SmsFactory.createSmsBlend(config);
+        }
     }
 
     /**
