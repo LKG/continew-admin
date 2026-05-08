@@ -4,17 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.continew</groupId>
+        <groupId>top.continew.admin</groupId>
         <artifactId>continew-extension</artifactId>
         <version>${revision}</version>
     </parent>
 
     <artifactId>continew-extension-schedule-server</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
     <description>任务调度服务端</description>
 
     <properties>
         <!-- SnailJob 服务端 -->
-        <snail-job.version>1.4.0</snail-job.version>
+        <snail-job.version>1.8.0</snail-job.version>
     </properties>
 
     <dependencies>

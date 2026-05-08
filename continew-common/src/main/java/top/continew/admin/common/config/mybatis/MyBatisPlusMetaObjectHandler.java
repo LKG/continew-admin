@@ -20,7 +20,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import top.continew.admin.common.context.UserContextHolder;
-import top.continew.admin.common.model.entity.BaseDO;
+import top.continew.admin.common.base.model.entity.BaseDO;
 
 import java.time.LocalDateTime;
 
@@ -56,7 +56,7 @@ public class MyBatisPlusMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        if (null == metaObject) {
+        if (metaObject == null) {
             return;
         }
         Long createUser = UserContextHolder.getUserId();
@@ -79,7 +79,7 @@ public class MyBatisPlusMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        if (null == metaObject) {
+        if (metaObject == null) {
             return;
         }
         Long updateUser = UserContextHolder.getUserId();
@@ -106,7 +106,7 @@ public class MyBatisPlusMetaObjectHandler implements MetaObjectHandler {
     private void fillFieldValue(MetaObject metaObject, String fieldName, Object fillFieldValue, boolean isOverride) {
         if (metaObject.hasSetter(fieldName)) {
             Object fieldValue = metaObject.getValue(fieldName);
-            setFieldValByName(fieldName, null != fieldValue && !isOverride ? fieldValue : fillFieldValue, metaObject);
+            setFieldValByName(fieldName, fieldValue != null && !isOverride ? fieldValue : fillFieldValue, metaObject);
         }
     }
 }

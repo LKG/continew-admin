@@ -35,8 +35,8 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: ./continew-webapi/target/app/*
-          target: /docker/continew-admin
+          source: ./continew-server/target/app/*
+          target: ${{ secrets.SERVER_PATH }}/continew-admin
           strip_components: 3
       # 5、启动
       - name: Start
@@ -47,6 +47,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /docker
-            docker-compose up --force-recreate --build -d continew-admin-server
-            docker images | grep none | awk '{print $3}' | xargs docker rmi
+            cd ${{ secrets.SERVER_PATH }}
+            docker-compose up --force-recreate --build -d continew-server
+            docker images | grep none | awk '{print $3}' | xargs -r docker rmi

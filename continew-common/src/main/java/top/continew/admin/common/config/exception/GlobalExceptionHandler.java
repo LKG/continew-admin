@@ -21,17 +21,22 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import top.continew.starter.core.constant.StringConstants;
 import top.continew.starter.core.exception.BadRequestException;
+import top.continew.starter.core.exception.BaseException;
 import top.continew.starter.core.exception.BusinessException;
 import top.continew.starter.web.model.R;
 
@@ -46,6 +51,15 @@ import top.continew.starter.web.model.R;
 @Order(99)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * 自定义异常
+     */
+    @ExceptionHandler(BaseException.class)
+    public R handleBaseException(BaseException e, HttpServletRequest request) {
+        log.error("[{}] {}", request.getMethod(), request.getRequestURI(), e);
+        return R.fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage());
+    }
 
     /**
      * 业务异常
@@ -79,6 +93,23 @@ public class GlobalExceptionHandler {
                                                        HttpServletRequest request) {
         log.error("[{}] {}", request.getMethod(), request.getRequestURI(), e);
         return R.fail(String.valueOf(HttpStatus.BAD_REQUEST.value()), "参数 '%s' 缺失".formatted(e.getParameterName()));
+    }
+
+    /**
+     * 参数校验不通过异常
+     * <p>
+     * {@code @NotBlank}、{@code @NotNull} 等参数验证不通过
+     * </p>
+     */
+    @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class})
+    public R handleBindException(BindException e, HttpServletRequest request) {
+        log.error("[{}] {}", request.getMethod(), request.getRequestURI(), e);
+        String errorMsg = e.getFieldErrors()
+            .stream()
+            .findFirst()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .orElse(StringConstants.EMPTY);
+        return R.fail(String.valueOf(HttpStatus.BAD_REQUEST.value()), errorMsg);
     }
 
     /**
@@ -127,7 +158,7 @@ public class GlobalExceptionHandler {
         }
         String sizeLimit;
         Throwable cause = e.getCause();
-        if (null != cause) {
+        if (cause != null) {
             msg = msg.concat(cause.getMessage().toLowerCase());
         }
         if (msg.contains("larger than")) {

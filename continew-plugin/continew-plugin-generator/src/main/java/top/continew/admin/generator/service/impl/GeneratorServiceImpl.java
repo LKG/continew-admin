@@ -53,16 +53,17 @@ import top.continew.admin.generator.model.query.GenConfigQuery;
 import top.continew.admin.generator.model.req.GenConfigReq;
 import top.continew.admin.generator.model.resp.GeneratePreviewResp;
 import top.continew.admin.generator.service.GeneratorService;
-import top.continew.starter.core.autoconfigure.project.ProjectProperties;
+import top.continew.starter.core.autoconfigure.application.ApplicationProperties;
 import top.continew.starter.core.constant.StringConstants;
 import top.continew.starter.core.enums.BaseEnum;
 import top.continew.starter.core.exception.BusinessException;
-import top.continew.starter.core.validation.CheckUtils;
-import top.continew.starter.data.core.enums.DatabaseType;
-import top.continew.starter.data.core.util.MetaUtils;
+import top.continew.starter.core.util.CollUtils;
+import top.continew.starter.core.util.validation.CheckUtils;
+import top.continew.starter.data.enums.DatabaseType;
+import top.continew.starter.data.util.MetaUtils;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.PageResp;
-import top.continew.starter.web.util.FileUploadUtils;
+import top.continew.starter.core.util.FileUploadUtils;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -84,7 +85,7 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     private final DataSource dataSource;
     private final GeneratorProperties generatorProperties;
-    private final ProjectProperties projectProperties;
+    private final ApplicationProperties applicationProperties;
     private final FieldConfigMapper fieldConfigMapper;
     private final GenConfigMapper genConfigMapper;
     private static final List<String> TIME_PACKAGE_CLASS = Arrays.asList("LocalDate", "LocalTime", "LocalDateTime");
@@ -119,7 +120,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     @Override
     public GenConfigDO getGenConfig(String tableName) throws SQLException {
         GenConfigDO genConfig = genConfigMapper.selectById(tableName);
-        if (null == genConfig) {
+        if (genConfig == null) {
             genConfig = new GenConfigDO(tableName);
             // 默认包名（当前包名）
             String packageName = ClassUtil.getPackage(GeneratorService.class);
@@ -134,7 +135,7 @@ public class GeneratorServiceImpl implements GeneratorService {
             GenConfigDO lastGenConfig = genConfigMapper.selectOne(Wrappers.lambdaQuery(GenConfigDO.class)
                 .orderByDesc(GenConfigDO::getCreateTime)
                 .last("LIMIT 1"));
-            if (null != lastGenConfig) {
+            if (lastGenConfig != null) {
                 genConfig.setAuthor(lastGenConfig.getAuthor());
             }
         }
@@ -157,13 +158,14 @@ public class GeneratorServiceImpl implements GeneratorService {
         Set<Map.Entry<String, List<String>>> typeMappingEntrySet = typeMappingMap.entrySet();
         // 新增或更新字段配置
         Map<String, FieldConfigDO> fieldConfigMap = fieldConfigList.stream()
-            .collect(Collectors.toMap(FieldConfigDO::getColumnName, Function.identity(), (key1, key2) -> key2));
+            .collect(Collectors.toMap(FieldConfigDO::getColumnName, Function.identity(), (existing,
+                                                                                          replacement) -> existing));
         int i = 1;
         for (Column column : columnList) {
             FieldConfigDO fieldConfig = Optional.ofNullable(fieldConfigMap.get(column.getName()))
                 .orElseGet(() -> new FieldConfigDO(column));
             // 更新已有字段配置
-            if (null != fieldConfig.getCreateTime()) {
+            if (fieldConfig.getCreateTime() != null) {
                 fieldConfig.setColumnType(column.getTypeName());
                 fieldConfig.setColumnSize(column.getSize());
             }
@@ -213,7 +215,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         // 保存或更新生成配置信息
         GenConfigDO newGenConfig = req.getGenConfig();
         GenConfigDO oldGenConfig = genConfigMapper.selectById(tableName);
-        if (null != oldGenConfig) {
+        if (oldGenConfig != null) {
             BeanUtil.copyProperties(newGenConfig, oldGenConfig);
             genConfigMapper.updateById(oldGenConfig);
         } else {
@@ -235,7 +237,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         try {
             String tempDir = SystemUtil.getUserInfo().getTempDir();
             // 删除旧代码
-            FileUtil.del(tempDir + projectProperties.getAppName());
+            FileUtil.del(tempDir + applicationProperties.getId());
             tableNames.forEach(tableName -> {
                 // 初始化配置及数据
                 List<GeneratePreviewResp> generatePreviewList = this.preview(tableName);
@@ -243,7 +245,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 this.generateCode(generatePreviewList, genConfigMapper.selectById(tableName));
             });
             // 打包下载
-            File tempDirFile = new File(tempDir, projectProperties.getAppName());
+            File tempDirFile = new File(tempDir, applicationProperties.getId());
             String zipFilePath = tempDirFile.getPath() + jodd.io.ZipUtil.ZIP_EXT;
             ZipUtil.zip(tempDirFile.getPath(), zipFilePath);
             FileUploadUtils.download(response, new File(zipFilePath));
@@ -296,9 +298,8 @@ public class GeneratorServiceImpl implements GeneratorService {
         InnerGenConfigDO innerGenConfig = new InnerGenConfigDO(genConfig);
         List<String> imports = new ArrayList<>();
         // 处理枚举字段
-        List<FieldConfigDO> fieldConfigRecords = fieldConfigList.stream()
-            .map(s -> convertToFieldConfigDO(s, imports))
-            .toList();
+        List<FieldConfigDO> fieldConfigRecords = CollUtils
+            .mapToList(fieldConfigList, s -> convertToFieldConfigDO(s, imports));
         innerGenConfig.setImports(imports);
 
         // 渲染代码
@@ -308,7 +309,7 @@ public class GeneratorServiceImpl implements GeneratorService {
             .createEngine(new TemplateConfig("templates", TemplateConfig.ResourceMode.CLASSPATH));
         // 在模板中允许使用静态方法
         if (engine instanceof FreemarkerEngine freemarkerEngine) {
-            DefaultObjectWrapper wrapper = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_33).build();
+            DefaultObjectWrapper wrapper = new DefaultObjectWrapperBuilder(Configuration.getVersion()).build();
             freemarkerEngine.getConfiguration().setSharedVariable("statics", wrapper.getStaticModels());
         }
         for (Map.Entry<String, GeneratorProperties.TemplateConfig> templateConfigEntry : templateConfigMap.entrySet()) {
@@ -334,7 +335,7 @@ public class GeneratorServiceImpl implements GeneratorService {
             if (!isBackend) {
                 fileName = ".vue".equals(extension) && "index".equals(classNameSuffix)
                     ? "index.vue"
-                    : this.getFrontendFileName(classNamePrefix, className, extension);
+                    : this.getFrontendFileName(classNamePrefix, classNameSuffix, extension);
             }
             generatePreview.setFileName(fileName);
             generatePreview.setContent(engine.getTemplate(templateConfig.getTemplatePath())
@@ -358,7 +359,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         if (StringUtils.isBlank(dictCode)) {
             return fieldConfig;
         }
-        Set<Class<?>> classSet = ClassUtil.scanPackageBySuper(projectProperties.getBasePackage(), BaseEnum.class);
+        Set<Class<?>> classSet = ClassUtil.scanPackageBySuper(applicationProperties.getBasePackage(), BaseEnum.class);
         Optional<Class<?>> clazzOptional = classSet.stream()
             .filter(s -> StrUtil.toUnderlineCase(s.getSimpleName()).toLowerCase().equals(dictCode))
             .findFirst();
@@ -383,8 +384,8 @@ public class GeneratorServiceImpl implements GeneratorService {
                                 GeneratorProperties.TemplateConfig templateConfig) {
         // 获取前后端基础路径
         String backendBasicPackagePath = this.buildBackendBasicPackagePath(genConfig, templateConfig);
-        String frontendBasicPackagePath = String.join(File.separator, projectProperties.getAppName(), projectProperties
-            .getAppName() + "-ui");
+        String frontendBasicPackagePath = String.join(File.separator, applicationProperties
+            .getId(), applicationProperties.getId() + "-ui");
         String packagePath;
         if (generatePreview.isBackend()) {
             // 例如：continew-admin/continew-system/src/main/java/top/continew/admin/system/service/impl
@@ -432,7 +433,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                                                 GeneratorProperties.TemplateConfig templateConfig) {
         String extension = templateConfig.getExtension();
         // 例如：continew-admin/continew-system/src/main/java/top/continew/admin/system
-        return String.join(File.separator, projectProperties.getAppName(), projectProperties.getAppName(), genConfig
+        return String.join(File.separator, applicationProperties.getId(), applicationProperties.getId(), genConfig
             .getModuleName(), "src", "main", FileNameUtil.EXT_JAVA.equals(extension)
                 ? "java"
                 : "resources") + (FileNameUtil.EXT_JAVA.equals(extension)
